@@ -1,0 +1,16 @@
+<mvc:View controllerName="samplefiorisap.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+        <List id="ShortProductList" headerText="Students" items="{    path: '/StudentSet'}">
+            <items>
+                <StandardListItem id="listitem" title="{Id}" description="{Name}" icon="sap-icon://account" type="Navigation" press="fnPress" detailPress="fnPress"/>
+            </items>
+        </List>
+        </content>
+        <headerContent>
+            <Button id="barcode" text="Scan" press="scanBarcode"/>
+        </headerContent>
+    </Page>
+</mvc:View>

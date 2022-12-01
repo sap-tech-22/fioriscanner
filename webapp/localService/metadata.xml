@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="ZTEST_ODATA1_SRV" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="Student" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Business event" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="First Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="City" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="City" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Age" Type="Edm.Byte" Nullable="false" sap:unicode="false" sap:label="INT1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="NavHeadToMarks" Relationship="ZTEST_ODATA1_SRV.AsHeadToMarks" FromRole="FromRole_AsHeadToMarks" ToRole="ToRole_AsHeadToMarks"/>
+            </EntityType>
+            <EntityType Name="StudentMarks" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                    <PropertyRef Name="Sem"/>
+                    <PropertyRef Name="Subject"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Business event" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Sem" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Number" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Subject" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Char20" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Marks" Type="Edm.Byte" Nullable="false" sap:unicode="false" sap:label="INT1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="StuID" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Id"/>
+                </Key>
+                <Property Name="Id" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:label="Business Event" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <NavigationProperty Name="NavHead" Relationship="ZTEST_ODATA1_SRV.AsHead" FromRole="FromRole_AsHead" ToRole="ToRole_AsHead"/>
+            </EntityType>
+            <Association Name="AsHead" sap:content-version="1">
+                <End Type="ZTEST_ODATA1_SRV.StuID" Multiplicity="1" Role="FromRole_AsHead"/>
+                <End Type="ZTEST_ODATA1_SRV.Student" Multiplicity="*" Role="ToRole_AsHead"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_AsHead">
+                        <PropertyRef Name="Id"/>
+                    </Principal>
+                    <Dependent Role="ToRole_AsHead">
+                        <PropertyRef Name="Id"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="AsHeadToMarks" sap:content-version="1">
+                <End Type="ZTEST_ODATA1_SRV.Student" Multiplicity="1" Role="FromRole_AsHeadToMarks"/>
+                <End Type="ZTEST_ODATA1_SRV.StudentMarks" Multiplicity="*" Role="ToRole_AsHeadToMarks"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_AsHeadToMarks">
+                        <PropertyRef Name="Id"/>
+                    </Principal>
+                    <Dependent Role="ToRole_AsHeadToMarks">
+                        <PropertyRef Name="Id"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ZTEST_ODATA1_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="StudentSet" EntityType="ZTEST_ODATA1_SRV.Student" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="StudentMarksSet" EntityType="ZTEST_ODATA1_SRV.StudentMarks" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="StuIDSet" EntityType="ZTEST_ODATA1_SRV.StuID" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <AssociationSet Name="AsHeadToMarksSet" Association="ZTEST_ODATA1_SRV.AsHeadToMarks" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="StudentSet" Role="FromRole_AsHeadToMarks"/>
+                    <End EntitySet="StudentMarksSet" Role="ToRole_AsHeadToMarks"/>
+                </AssociationSet>
+                <AssociationSet Name="AsHeadSet" Association="ZTEST_ODATA1_SRV.AsHead" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="StuIDSet" Role="FromRole_AsHead"/>
+                    <End EntitySet="StudentSet" Role="ToRole_AsHead"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link rel="self" href="http://s4hana1809.bas/sap/opu/odata/SAP/ZTEST_ODATA1_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+            <atom:link rel="latest-version" href="http://s4hana1809.bas/sap/opu/odata/SAP/ZTEST_ODATA1_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>
